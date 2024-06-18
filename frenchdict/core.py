@@ -1,7 +1,11 @@
 """Main module for the `frenchdict` application."""
 
 import sys
+import os
+import json
 from utils import commands
+
+FR_EN_DICT = r"C:\Users\Renee Desporte\Documents\projects\frenchdict\docs\pared__kaikki.org-dictionary-French.json"
 
 def yes_or_no(message):
     """Get yes or no reply from user for input message `message`.
@@ -24,52 +28,91 @@ def yes_or_no(message):
             return False
         print('Type "Y" or "n".')
 
-def get_french_translation():
+def load_in_dictionary(path_to_dict):
+    """Load in the French-to-English dictionary.
+    
+    Parameters
+    ----------
+    path_to_dict : pathlike
+        Path to json file containing French-to-English translations.
+    
+    Returns
+    -------
+    dict
+        Dictionary containing French words as keys.
+    TODO : implement English-words-as-keys dict.
+    """
+    with open(path_to_dict, "r", encoding="utf8") as f:
+        lines = [line.rstrip() for line in f]
+        fr_to_en = json.loads(lines[0])
+
+    return fr_to_en
+
+def get_french_translation(dictionary):
     """Get user input in English and translate to French.
     
     Parameters
     ----------
-    None
+    dictionary : dict
+        Dictionary with English words as keys.
 
     Returns
     -------
-    string
-        The user inputted word in English.
-    string
-        The French translation of the user-inputted word.
+    None
     """
     while True:
         word = input("Type any word in English to get its French translation: ")
-        # TODO check that `word` exists in the Fr-En dictionary
-        translated_word = "VOID"
-        if translated_word is not None:
-            break
-        if not yes_or_no(f"The word '{word}' has no French translation."
+        if word in dictionary.keys():
+            translated_word = dictionary[word]
+            print(f"The translation of '{word}' is '{translated_word}'.")
+            continue
+        if not yes_or_no(f"Couldn't find '{word}' in our dictionary."
                             " Try another word? [Y/n]: "):
-            return word, "N/A"
-    return word, translated_word
+            return
 
-def command_line_parser(valid_commands):
+def get_english_translation(dictionary):
+    """Get user input in French and translate to English.
+    
+    Parameters
+    ----------
+    dictionary : dict
+        Dictionary with French words as keys.
+    """
+    while True:
+        word = input("Type any word in French to get its English translation: ")
+        if word in dictionary.keys():
+            translated_word = dictionary[word]
+            print(f"The translation of '{word}' is '{translated_word}'.")
+            continue
+        if not yes_or_no(f"Couldn't find '{word}' in our dictionary."
+                            " Try another word? [Y/n]: "):
+            return
+
+def command_line_parser(valid_commands, loaded_french_dict, en_to_fr_dict=None):
     """Get user input for non-translation tasks, e.g., "help".
     
     Parameters
     ----------
     valid_commands : list of str
         List of allowable commands.
+    loaded_french_dict : dict
+        Fr-to-En dictionary loaded from json.
+    en_to_fr_dict : dict, default=None
+        En-to-Fr dictionary loaded from json.
     """
     command = input("[frenchdict]: ")
     if command not in valid_commands:
-        print("Bad command! Options:")
+        print(f"Bad command: '{command}'! Options:")
         for key, val in commands.items():
             print(f"     {val}: {key}")
     elif command in ("help", "h"):
         for key, val in commands.items():
-            print(f"     {key}: {val}")
+            print(f"     {val}: {key}")
     elif command in ("french", "f"):
-        inputted_word, translation = get_french_translation()
-        print(f"The translation of '{inputted_word}' is '{translation}'.")
+        print("The English-to-French translation is not yet implemented.")
+        # get_french_translation(en_to_fr_dict)
     elif command in ("english", "e"):
-        print("The French-to-English translation is not yet implemented.")
+        get_english_translation(loaded_french_dict)
     elif command in ("quit", "q"):
         print("\nExiting...")
         sys.exit(0)
@@ -82,9 +125,12 @@ def main():
         for c in c_list
     ]
 
+    loaded_dict = load_in_dictionary(FR_EN_DICT)
+    print(f"Loaded dictionary with {len(loaded_dict.keys())} French words.")
+
     try:
         while True:
-            command_line_parser(allowable_commands)
+            command_line_parser(allowable_commands, loaded_dict)
     except KeyboardInterrupt:
         print("\nExiting...")
         sys.exit(0)

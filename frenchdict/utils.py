@@ -4,7 +4,7 @@ import json
 
 commands = {"Print the list of allowable commands.": ["help", "h"],
             "Translate a word from English to French.": ["french", "f"], 
-            "Translate a word from French to English.": ["english ", "e"], 
+            "Translate a word from French to English.": ["english", "e"], 
             "Quit the application.": ["quit", "q"]}
 
 def pare_kaikki_data(path):
