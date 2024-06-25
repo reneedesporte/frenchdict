@@ -83,9 +83,15 @@ def get_english_translation(dictionary):
     dictionary : dict
         Dictionary with French words as keys.
     """
-    help_msg = print("\nType any word in French to get its English translation, or 'q' to go back to the main menu.")
+    help_msg = ("\nType any word in French to get its English translation.\n"
+                "Other options:\n    'q' to go back to the main menu.\n    "
+                "'h' or 'help' for this message.\n")
+    print(help_msg)
     while True:
         word = input("[French-to-English]: ")
+        if word == "h":
+            print(help_msg)
+            continue
         if word == "q":
             if yes_or_no("Are you sure you want to go back to the main menu? [Y/n]: "):
                 return
