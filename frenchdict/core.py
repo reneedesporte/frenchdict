@@ -65,15 +65,23 @@ def get_french_translation(dictionary):
     -------
     None
     """
+    help_msg = ("\nType any word in English to get its French translation.\n"
+                "Other options:\n    'q' to go back to the main menu.\n    "
+                "'h' or 'help' for this message.\n")
+    print(help_msg)
     while True:
-        word = input("Type any word in English to get its French translation: ")
+        word = input("[English-to-French]: ")
+        if word == "h":
+            print(help_msg)
+            continue
+        if word == "q":
+            if yes_or_no("Are you sure you want to go back to the main menu? [Y/n]: "):
+                return
         if word in dictionary.keys():
             translated_word = dictionary[word]
             print(f"The translation of '{word}' is '{translated_word}'.")
             continue
-        if not yes_or_no(f"Couldn't find '{word}' in our dictionary."
-                            " Try another word? [Y/n]: "):
-            return
+        print(f"Couldn't find the English word '{word}' in our dictionary.")
 
 def get_english_translation(dictionary):
     """Get user input in French and translate to English.
