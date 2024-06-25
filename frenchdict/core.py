@@ -7,6 +7,35 @@ from utils import commands
 
 FR_EN_DICT = os.path.join("docs", "pared__kaikki.org-dictionary-French.json")  # TODO fix path once package is installable
 
+def introduction():
+    """Print introduction message to application.
+    
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+    """
+    print(
+        "\n..........................................................\n"
+        "...#######.####...........####..........######.###...##...\n"
+        "...##......##..##........##...##........##.....####..##...\n"
+        "...######..####.....##.......##....##...#####..##.##.##...\n"
+        "...##......##.##...........##...........##.....##..####...\n"
+        "...##......##..##.........######........######.##...###...\n"
+        "..........................................................\n"
+    )
+    print("A CLI for doing French-to-English and English-to-French translations.")
+    print("For more information, "
+          "please see the repo at https://github.com/reneedesporte/frenchdict.\n")
+
+    print("Options:")
+    for key, val in commands.items():
+        print(f"     {val}: {key}")
+    print("\n")
+
 def yes_or_no(message):
     """Get yes or no reply from user for input message `message`.
     
@@ -166,6 +195,7 @@ def command_line_parser(valid_commands, loaded_french_dict, en_to_fr_dict):
 
 def main():
     """Main function within command-line interactions occur."""
+    introduction()
     allowable_commands = [
         c
         for c_list in commands.values()
@@ -173,9 +203,7 @@ def main():
     ]
 
     loaded_dict = load_in_dictionary(FR_EN_DICT)
-    print(f"Loaded dictionary with {len(loaded_dict.keys())} French words.")
     calculated_dict = calculate_english_to_french_dict(loaded_dict)
-    print(f"Calculated dictionary with {len(calculated_dict.keys())} English words.")
 
     try:
         while True:
