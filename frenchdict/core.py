@@ -53,6 +53,29 @@ def load_in_dictionary(path_to_dict):
 
     return fr_to_en
 
+def calculate_english_to_french_dict(fr_to_en):
+    """Calculate the English to French dictionary from the saved French-to-English one.
+    
+    Parameters
+    ----------
+    fr_to_en : dict
+        Dictionary containing the French words as keys.
+    
+    Returns
+    -------
+    dict
+        Dictionary containing English words as keys.
+    """
+    en_to_fr = {}
+    for key, values in fr_to_en.items():
+        for value in values:
+            if value not in en_to_fr:
+                en_to_fr[value] = [key]
+                continue
+            en_to_fr[value].append(key)
+
+    return en_to_fr
+
 def get_french_translation(dictionary):
     """Get user input in English and translate to French.
     
@@ -109,7 +132,7 @@ def get_english_translation(dictionary):
             continue
         print(f"Couldn't find the French word '{word}' in our dictionary.")
 
-def command_line_parser(valid_commands, loaded_french_dict, en_to_fr_dict=None):
+def command_line_parser(valid_commands, loaded_french_dict, en_to_fr_dict):
     """Get user input for non-translation tasks, e.g., "help".
     
     Parameters
@@ -118,7 +141,7 @@ def command_line_parser(valid_commands, loaded_french_dict, en_to_fr_dict=None):
         List of allowable commands.
     loaded_french_dict : dict
         Fr-to-En dictionary loaded from json.
-    en_to_fr_dict : dict, default=None
+    en_to_fr_dict : dict
         En-to-Fr dictionary loaded from json.
     """
     command = input("[frenchdict]: ")
@@ -130,8 +153,7 @@ def command_line_parser(valid_commands, loaded_french_dict, en_to_fr_dict=None):
         for key, val in commands.items():
             print(f"     {val}: {key}")
     elif command in ("french", "f"):
-        print("The English-to-French translation is not yet implemented.")
-        # get_french_translation(en_to_fr_dict)
+        get_french_translation(en_to_fr_dict)
     elif command in ("english", "e"):
         get_english_translation(loaded_french_dict)
     elif command in ("quit", "q"):
@@ -148,10 +170,12 @@ def main():
 
     loaded_dict = load_in_dictionary(FR_EN_DICT)
     print(f"Loaded dictionary with {len(loaded_dict.keys())} French words.")
+    calculated_dict = calculate_english_to_french_dict(loaded_dict)
+    print(f"Calculated dictionary with {len(calculated_dict.keys())} English words.")
 
     try:
         while True:
-            command_line_parser(allowable_commands, loaded_dict)
+            command_line_parser(allowable_commands, loaded_dict, calculated_dict)
     except KeyboardInterrupt:
         print("\nExiting...")
         sys.exit(0)
