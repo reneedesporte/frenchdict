@@ -83,15 +83,17 @@ def get_english_translation(dictionary):
     dictionary : dict
         Dictionary with French words as keys.
     """
+    help_msg = print("\nType any word in French to get its English translation, or 'q' to go back to the main menu.")
     while True:
-        word = input("Type any word in French to get its English translation: ")
+        word = input("[French-to-English]: ")
+        if word == "q":
+            if yes_or_no("Are you sure you want to go back to the main menu? [Y/n]: "):
+                return
         if word in dictionary.keys():
             translated_word = dictionary[word]
             print(f"The translation of '{word}' is '{translated_word}'.")
             continue
-        if not yes_or_no(f"Couldn't find '{word}' in our dictionary."
-                            " Try another word? [Y/n]: "):
-            return
+        print(f"Couldn't find the French word '{word}' in our dictionary.")
 
 def command_line_parser(valid_commands, loaded_french_dict, en_to_fr_dict=None):
     """Get user input for non-translation tasks, e.g., "help".
