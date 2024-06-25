@@ -101,8 +101,10 @@ def get_french_translation(dictionary):
             if yes_or_no("Are you sure you want to go back to the main menu? [Y/n]: "):
                 return
         if word in dictionary.keys():
-            translated_word = dictionary[word]
-            print(f"The translation of '{word}' is '{translated_word}'.")
+            base = f"The French translation of '{word}' is \n"
+            for w in dictionary[word]:
+                base = f"{base}    - {w}\n"
+            print(base)
             continue
         print(f"Couldn't find the English word '{word}' in our dictionary.")
 
@@ -127,8 +129,10 @@ def get_english_translation(dictionary):
             if yes_or_no("Are you sure you want to go back to the main menu? [Y/n]: "):
                 return
         if word in dictionary.keys():
-            translated_word = dictionary[word]
-            print(f"The translation of '{word}' is '{translated_word}'.")
+            base = f"The English translation of '{word}' is \n"
+            for w in dictionary[word]:
+                base = f"{base}    - {w}\n"
+            print(base)
             continue
         print(f"Couldn't find the French word '{word}' in our dictionary.")
 
