@@ -28,6 +28,7 @@ def introduction():
         "..........................................................\n"
     )
     print("A CLI for doing French-to-English and English-to-French translations.")
+    print("DISCLAIMER: The dictionary used for this application contains profanities.")
     print("For more information, "
           "please see the repo at https://github.com/reneedesporte/frenchdict.\n")
 
