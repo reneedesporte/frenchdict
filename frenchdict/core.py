@@ -5,7 +5,7 @@ import os
 import json
 from utils import commands
 
-FR_EN_DICT = os.path.join("docs", "pared__kaikki.org-dictionary-French.json")  # TODO fix path once package is installable
+FR_EN_DICT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pared__kaikki.org-dictionary-French.json")  # TODO fix path once package is installable
 
 def introduction():
     """Print introduction message to application.
@@ -77,8 +77,7 @@ def load_in_dictionary(path_to_dict):
             lines = [line.rstrip() for line in f]
             fr_to_en = json.loads(lines[0])
     except FileNotFoundError:
-        print(f"Couldn't find the dictionary file at '{path_to_dict}'.\n"
-              "Please run the program from the top-most level of the repo.")
+        print(f"Couldn't find the dictionary file at '{path_to_dict}'.\n")
         sys.exit(0)
 
     return fr_to_en
