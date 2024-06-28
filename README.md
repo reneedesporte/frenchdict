@@ -15,4 +15,4 @@ I haven't packaged the application yet. The application runs from `french_dict/c
 I've only tested on Windows, but I see no reason why this shouldn't work on Linux or Mac as well.
 
 ## Dictionary Source
-The dictionary file included in `docs/` is a pared down version of the dictionary from [kaikki.org](https://kaikki.org/dictionary/French/index.html).
+The included dictionary file is a pared down version of the dictionary from [kaikki.org](https://kaikki.org/dictionary/French/index.html).
